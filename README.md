@@ -16,4 +16,7 @@ ts-node-dev installation
 
 create interface file for user,
 create model file for user to apply schema,
-schema declared
+schema declared,
+controller,
+service,
+route
