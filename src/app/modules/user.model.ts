@@ -16,7 +16,7 @@ const orderSchema = new Schema<Order>({
   productName: { type: String, required: true },
   price: { type: Number, required: true },
   quantity: { type: Number, required: true },
-} );
+});
 
 const userSchema = new Schema<User>({
   userId: { type: Number, required: true },
@@ -30,3 +30,5 @@ const userSchema = new Schema<User>({
   address: addressSchema,
   orders: [orderSchema],
 });
+
+export const UserModel = model<User>("User", userSchema);
