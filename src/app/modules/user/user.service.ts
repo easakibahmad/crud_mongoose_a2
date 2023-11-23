@@ -2,6 +2,10 @@ import { UserModel } from "../user.model";
 import { User } from "./user.interface";
 
 const createUserIntoDB = async (user: User) => {
+  // if (await UserModel.isUserExists(User.userId)) {
+  //   throw new Error("User already exists");
+  // }
+
   const result = await UserModel.create(user);
   return result;
 };
@@ -44,12 +48,16 @@ const getSingleUserFromDB = async (userId: string) => {
   return user;
 };
 
-const updateSingleUserFromDB =async (userId:string) => {
- const user = await UserModel.findOne({userId}) 
-}
+const updateSingleUserFromDB = async (userId: string) => {
+  const user = await UserModel.findOne({ userId });
+};
 
+const deleteSingleUserFromDB = async (userId: string) => {
+  return await UserModel.deleteOne({ userId });
+};
 export const userServices = {
   createUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
+  deleteSingleUserFromDB,
 };

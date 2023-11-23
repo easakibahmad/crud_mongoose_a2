@@ -31,4 +31,10 @@ const userSchema = new Schema<User>({
   orders: [orderSchema],
 });
 
+// // creating a custom static method
+// userSchema.statics.isUserExists = async function (userId: number) {
+//   const existingUser = await UserModel.findOne({ userId });
+//   return existingUser;
+// };
+
 export const UserModel = model<User>("User", userSchema);

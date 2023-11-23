@@ -1,4 +1,4 @@
-import { Schema, model, connect } from "mongoose";
+import { Schema, model, connect, Model } from "mongoose";
 
 export type FullName = {
   firstName: string;
@@ -29,3 +29,8 @@ export type User = {
   address: Address;
   orders: Order[];
 };
+
+// for creating static
+// export interface UserStaticModel extends Model<User> {
+//   isUserExists(userId: number): Promise<User | null>;
+// }
