@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { userServices } from "./user.service";
 import { UserModel } from "../user.model";
-import UserValidationSchema from "./user.zod.validation";
+import {
+  UserValidationSchema,
+  OrderValidatorSchema,
+} from "./user.zod.validation";
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -98,6 +101,7 @@ const updateSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
     const updatedData = req.body;
+    const updatedUserId = updatedData?.userId;
     const existingUser = await UserModel.findOne({ userId });
     const result = await userServices.updateSingleUserFromDB(
       userId,
@@ -107,8 +111,6 @@ const updateSingleUser = async (req: Request, res: Response) => {
     if (existingUser) {
       if (result) {
         // if userId is updated
-        const updatedUserId = updatedData?.userId;
-
         if (updatedUserId) {
           const updatedUserNewData = await userServices.getSingleUserFromDB(
             updatedUserId
@@ -169,10 +171,38 @@ const deleteSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+const updateOrdersData = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    const orderData = req.body;
+    const validatedOrder = OrderValidatorSchema.parse(orderData);
+    const existingUser = await UserModel.findOne({ userId });
+    if (existingUser) {
+      if (await userServices.addOrderInOrdersDB(userId, validatedOrder)) {
+        res.status(200).json({
+          success: true,
+          message: "Order created successfully!",
+          data: null,
+        });
+      }
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "User not found, (user is not existing!)",
+      });
+    }
+  } catch (error) {
+    res.status(404).json({
+      error: error,
+    });
+  }
+};
+
 export const userController = {
   createUser,
   getAllUsers,
   getSingleUser,
   deleteSingleUser,
   updateSingleUser,
+  updateOrdersData,
 };

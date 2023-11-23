@@ -59,10 +59,24 @@ const updateSingleUserFromDB = async (userId: string, updatedData: any) => {
 const deleteSingleUserFromDB = async (userId: string) => {
   return await UserModel.deleteOne({ userId });
 };
+
+const addOrderInOrdersDB = async (userId: string, newOrder: any) => {
+  const result = await UserModel.updateOne(
+    { userId },
+    {
+      $push: {
+        orders: newOrder,
+      },
+    }
+  );
+  return result;
+};
+
 export const userServices = {
   createUserIntoDB,
   getAllUsersFromDB,
   getSingleUserFromDB,
   deleteSingleUserFromDB,
   updateSingleUserFromDB,
+  addOrderInOrdersDB,
 };

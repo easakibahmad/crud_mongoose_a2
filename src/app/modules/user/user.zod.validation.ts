@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const UserValidationSchema = z.object({
+export const UserValidationSchema = z.object({
   userId: z.number(),
   username: z.string(),
   password: z.string(),
@@ -28,6 +28,10 @@ const UserValidationSchema = z.object({
       })
     )
     .default([]),
-});
+} );
 
-export default UserValidationSchema;
+export const OrderValidatorSchema = z.object({
+  productName: z.string(),
+  price: z.number(),
+  quantity: z.number(),
+});
