@@ -10,7 +10,7 @@ app.use(cors());
 app.use("/api", userRoutes);
 
 const getAController = (req: Request, res: Response) => {
-  res.send("Hello World!");
+  res.send("Welcome to the api users!");
 };
 
 app.get("/", getAController);
