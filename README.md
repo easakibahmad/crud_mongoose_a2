@@ -28,4 +28,6 @@ ts-node-dev installation
 3. get single user api
 4. single user deleting api
 5. updating user data api
-6. user order push in orders array api
+6. api for user order push in orders array 
+7. get user orders api
+8. get total price of user orders api

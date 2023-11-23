@@ -94,6 +94,27 @@ const retrieveUserOrders = async (userId: string) => {
   return orders;
 };
 
+const retrieveTotalPriceOfOrders = async (userId: string) => {
+  const totalPrice = await UserModel.findOne(
+    { userId },
+    {
+      totalPrice: {
+        $sum: {
+          $map: {
+            input: "$orders",
+            as: "order",
+            in: {
+              $multiply: ["$$order.price", "$$order.quantity"],
+            },
+          },
+        },
+      },
+      _id: 0,
+    }
+  );
+  return totalPrice;
+};
+
 export const userServices = {
   createUserIntoDB,
   getAllUsersFromDB,
@@ -102,4 +123,5 @@ export const userServices = {
   updateSingleUserFromDB,
   addOrderInOrdersDB,
   retrieveUserOrders,
+  retrieveTotalPriceOfOrders,
 };

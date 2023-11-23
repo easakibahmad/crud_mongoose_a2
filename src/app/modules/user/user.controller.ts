@@ -236,6 +236,41 @@ const getSingleUserOrders = async (req: Request, res: Response) => {
     });
   }
 };
+
+
+// api to get totalPrice of orders 
+const getTotalPrice = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+
+    const existingUser = await UserModel.findOne({ userId });
+
+    if (existingUser) {
+      const result = await userServices.retrieveTotalPriceOfOrders(userId);
+      // console.log(result);
+      res.status(200).json({
+        success: true,
+        message: "Total price calculated successfully!",
+        data: result,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
+      });
+    }
+  } catch (error) {
+    res.status(404).json({
+      error: error,
+    });
+  }
+};
+
+
 export const userController = {
   createUser,
   getAllUsers,
@@ -244,4 +279,5 @@ export const userController = {
   updateSingleUser,
   updateOrdersData,
   getSingleUserOrders,
+  getTotalPrice,
 };
