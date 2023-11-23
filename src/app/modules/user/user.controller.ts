@@ -140,7 +140,11 @@ const updateSingleUser = async (req: Request, res: Response) => {
     } else {
       res.status(404).json({
         success: false,
-        message: "User not found (user is not existing!)",
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
       });
     }
   } catch (error) {
@@ -167,7 +171,11 @@ const deleteSingleUser = async (req: Request, res: Response) => {
     } else {
       res.status(404).json({
         success: false,
-        message: "User not found, (already deleted or user is not existing!)",
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
       });
     }
   } catch (error) {
@@ -195,7 +203,11 @@ const updateOrdersData = async (req: Request, res: Response) => {
     } else {
       res.status(404).json({
         success: false,
-        message: "User not found, (user is not existing!)",
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
       });
     }
   } catch (error) {
