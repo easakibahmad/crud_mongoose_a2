@@ -1,5 +1,14 @@
 # crud_mongoose_a2
 
+# to run application locally
+
+1. npm run build (for build)
+2. npm start / npm start (that can start the project )
+3. This information is from my package.json file. You can clearly understand it by reviewing this:
+   {"start:prod": "node ./dist/server.js",
+   "start": "node ./dist/server.js",
+   "start:dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",}
+
 # project setup(part 1)
 
 1. npm initialization,
@@ -28,6 +37,6 @@ ts-node-dev installation
 3. get single user api
 4. single user deleting api
 5. updating user data api
-6. api for user order push in orders array 
+6. api for user order push in orders array
 7. get user orders api
 8. get total price of user orders api
