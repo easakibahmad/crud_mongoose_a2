@@ -6,6 +6,7 @@ import {
   OrderValidatorSchema,
 } from "./user.zod.validation";
 
+//api to create user
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
@@ -55,6 +56,7 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
+// api to retrieve all users
 const getAllUsers = async (req: Request, res: Response) => {
   try {
     const users = await userServices.getAllUsersFromDB();
@@ -72,6 +74,7 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+// api to get single user by id
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
@@ -97,6 +100,7 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+// api to update single user by its userId
 const updateSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
@@ -145,6 +149,8 @@ const updateSingleUser = async (req: Request, res: Response) => {
     });
   }
 };
+
+// api to deleting single user by its userId
 const deleteSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
@@ -171,6 +177,7 @@ const deleteSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+// api to update user orders data
 const updateOrdersData = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
@@ -198,6 +205,37 @@ const updateOrdersData = async (req: Request, res: Response) => {
   }
 };
 
+// api to get specific user orders by its userId
+const getSingleUserOrders = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+
+    const existingUser = await UserModel.findOne({ userId });
+
+    if (existingUser) {
+      const result = await userServices.retrieveUserOrders(userId);
+      // console.log(result);
+      res.status(200).json({
+        success: true,
+        message: "Order fetched successfully!",
+        data: result,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
+      });
+    }
+  } catch (error) {
+    res.status(404).json({
+      error: error,
+    });
+  }
+};
 export const userController = {
   createUser,
   getAllUsers,
@@ -205,4 +243,5 @@ export const userController = {
   deleteSingleUser,
   updateSingleUser,
   updateOrdersData,
+  getSingleUserOrders,
 };

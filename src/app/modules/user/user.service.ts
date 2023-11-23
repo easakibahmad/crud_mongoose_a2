@@ -72,6 +72,28 @@ const addOrderInOrdersDB = async (userId: string, newOrder: any) => {
   return result;
 };
 
+const retrieveUserOrders = async (userId: string) => {
+  const orders = await UserModel.findOne(
+    { userId },
+    {
+      orders: {
+        $map: {
+          input: "$orders",
+          as: "order",
+          in: {
+            productName: "$$order.productName",
+            price: "$$order.price",
+            quantity: "$$order.quantity",
+            _id: 0,
+          },
+        },
+      },
+      _id: 0,
+    }
+  );
+  return orders;
+};
+
 export const userServices = {
   createUserIntoDB,
   getAllUsersFromDB,
@@ -79,4 +101,5 @@ export const userServices = {
   deleteSingleUserFromDB,
   updateSingleUserFromDB,
   addOrderInOrdersDB,
+  retrieveUserOrders,
 };
