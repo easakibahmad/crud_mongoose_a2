@@ -42,18 +42,7 @@ const createUser = async (req: Request, res: Response) => {
 
 const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const users = await UserModel.aggregate([
-      {
-        $project: {
-          username: 1,
-          fullName: 1,
-          age: 1,
-          email: 1,
-          address: 1,
-          _id: 0,
-        },
-      },
-    ]);
+    const users = await userServices.getAllUsersFromDB();
     res.status(200).json({
       success: true,
       message: "Users fetched successfully!",
@@ -71,18 +60,7 @@ const getAllUsers = async (req: Request, res: Response) => {
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
-    // console.log(userId);
-    const user = await UserModel.findOne(
-      { userId },
-      {
-        password: 0,
-        orders: 0,
-        __v: 0,
-        _id: 0,
-        "fullName._id": 0,
-        "address._id": 0,
-      }
-    );
+    const user = await userServices.getSingleUserFromDB(userId);
 
     if (!user) {
       res.status(404).json({
@@ -94,7 +72,7 @@ const getSingleUser = async (req: Request, res: Response) => {
         },
       });
     }
-
+    console.log(user);
     res.status(200).json({
       success: true,
       message: "User fetched successfully!",
