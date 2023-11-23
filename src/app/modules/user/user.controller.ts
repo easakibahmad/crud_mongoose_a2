@@ -68,7 +68,45 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+    // console.log(userId);
+    const user = await UserModel.findOne(
+      { userId },
+      {
+        password: 0,
+        orders: 0,
+        __v: 0,
+        _id: 0,
+        "fullName._id": 0,
+        "address._id": 0,
+      }
+    );
+
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User fetched successfully!",
+      data: user,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const userController = {
   createUser,
   getAllUsers,
+  getSingleUser,
 };

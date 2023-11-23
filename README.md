@@ -24,3 +24,5 @@ ts-node-dev installation
 # api
 
 1. create new user api
+2. retrieve all users api
+3. get single user api
