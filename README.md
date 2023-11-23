@@ -26,3 +26,5 @@ ts-node-dev installation
 1. create new user api
 2. retrieve all users api
 3. get single user api
+4. single user deleting api
+5. updating user data api 

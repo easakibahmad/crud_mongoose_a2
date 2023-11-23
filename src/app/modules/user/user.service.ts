@@ -1,5 +1,6 @@
 import { UserModel } from "../user.model";
 import { User } from "./user.interface";
+import { Request, Response } from "express";
 
 const createUserIntoDB = async (user: User) => {
   // if (await UserModel.isUserExists(User.userId)) {
@@ -48,8 +49,11 @@ const getSingleUserFromDB = async (userId: string) => {
   return user;
 };
 
-const updateSingleUserFromDB = async (userId: string) => {
-  const user = await UserModel.findOne({ userId });
+const updateSingleUserFromDB = async (userId: string, updatedData: any) => {
+  const updateData = { $set: updatedData };
+
+  const result = await UserModel.updateOne({ userId }, updateData);
+  return result;
 };
 
 const deleteSingleUserFromDB = async (userId: string) => {
@@ -60,4 +64,5 @@ export const userServices = {
   getAllUsersFromDB,
   getSingleUserFromDB,
   deleteSingleUserFromDB,
+  updateSingleUserFromDB,
 };
