@@ -16,7 +16,7 @@
 3. tsc initialization (root and source directory setup)
 4. dotenv configuration folder
 5. connect with mongodb
-6. typescript declaration file installation for express and cors 
+6. typescript declaration file installation for express and cors
 
 # project setup(part 2)
 

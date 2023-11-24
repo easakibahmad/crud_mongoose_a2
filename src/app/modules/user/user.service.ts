@@ -1,6 +1,7 @@
 import { UserModel } from "../user.model";
 import { User } from "./user.interface";
 
+// this is for creating new user 
 const createUserIntoDB = async (user: User) => {
   // use user static method to check user exists or not
   if (await UserModel.isUserExists(user.userId)) {
@@ -11,6 +12,7 @@ const createUserIntoDB = async (user: User) => {
   return result;
 };
 
+// retrieve all users from database 
 const getAllUsersFromDB = async () => {
   const users = await UserModel.aggregate([
     {
@@ -34,6 +36,7 @@ const getAllUsersFromDB = async () => {
   return users;
 };
 
+// retrieve single user from db 
 const getSingleUserFromDB = async (userId: string) => {
   // use user static method to check user exists or not
   if (await UserModel.isUserExists(parseInt(userId, 10))) {
@@ -52,6 +55,7 @@ const getSingleUserFromDB = async (userId: string) => {
   }
 };
 
+// update user data 
 const updateSingleUserFromDB = async (userId: string, updatedData: any) => {
   if (await UserModel.isUserExists(parseInt(userId, 10))) {
     const updateData = { $set: updatedData };
@@ -61,12 +65,14 @@ const updateSingleUserFromDB = async (userId: string, updatedData: any) => {
   }
 };
 
+// delete user from database by using userId 
 const deleteSingleUserFromDB = async (userId: string) => {
   if (await UserModel.isUserExists(parseInt(userId, 10))) {
     return await UserModel.deleteOne({ userId });
   }
 };
 
+// add order in orders database for a specific user 
 const addOrderInOrdersDB = async (userId: string, newOrder: any) => {
   if (await UserModel.isUserExists(parseInt(userId, 10))) {
     const result = await UserModel.updateOne(
