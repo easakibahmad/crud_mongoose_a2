@@ -33,14 +33,14 @@ ts-node-dev installation
 
 # api
 
-1. create new user api
-2. retrieve all users api
-3. get single user api
-4. single user deleting api
-5. updating user data api
-6. api for user order push in orders array
-7. get user orders api
-8. get total price of user orders api
+1. create new user api (POST /api/users)
+2. retrieve all users api (GET /api/users)
+3. get single user api (GET /api/users/:userId)
+4. single user deleting api (DELETE /api/users/:userId)
+5. updating user data api (PUT /api/users/:userId)
+6. api for user to order push in orders array (PUT /api/users/:userId/orders)
+7. get user orders api (GET /api/users/:userId/orders)
+8. get total price of user orders api (GET /api/users/:userId/orders/total-price)
 
 # static
 
