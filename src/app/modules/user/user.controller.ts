@@ -114,49 +114,46 @@ const updateSingleUser = async (req: Request, res: Response) => {
       zodParsedData
     );
 
-    // if invalid keys length is greater then 0
-    if (invalidKeys.length > 0) {
-      res.status(404).json({
-        success: false,
-        message: "Invalid keys found",
-      });
-      return;
-    }
-    //if not found invalid keys
-    else {
-      if (result) {
-        // if userId is updated
-        if (updatedUserId) {
-          const updatedUserNewData = await userServices.getSingleUserFromDB(
-            updatedUserId
-          );
-          res.status(200).json({
-            success: true,
-            message: "User updated successfully!",
-            data: updatedUserNewData,
-          });
-        }
-        // if userId is not updated
-        else {
-          const updatedUserNewData = await userServices.getSingleUserFromDB(
-            userId
-          );
-          res.status(200).json({
-            success: true,
-            message: "User updated successfully!",
-            data: updatedUserNewData,
-          });
-        }
-      } else {
+    if (result) {
+      // if invalid keys length is greater then 0
+      if (invalidKeys.length > 0) {
         res.status(404).json({
           success: false,
-          message: "User not found",
-          error: {
-            code: 404,
-            description: "User not found!",
-          },
+          message: "Invalid keys found",
+        });
+        return;
+      }
+      // if userId is updated
+      if (updatedUserId) {
+        const updatedUserNewData = await userServices.getSingleUserFromDB(
+          updatedUserId
+        );
+        res.status(200).json({
+          success: true,
+          message: "User updated successfully!",
+          data: updatedUserNewData,
         });
       }
+      // if userId is not updated
+      else {
+        const updatedUserNewData = await userServices.getSingleUserFromDB(
+          userId
+        );
+        res.status(200).json({
+          success: true,
+          message: "User updated successfully!",
+          data: updatedUserNewData,
+        });
+      }
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
+      });
     }
   } catch (error) {
     res.status(404).json({
