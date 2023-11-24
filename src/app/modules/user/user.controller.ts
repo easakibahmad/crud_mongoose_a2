@@ -98,9 +98,9 @@ const getSingleUser = async (req: Request, res: Response) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(404).json({
+    res.status(500).json({
       success: false,
-      message: "User not found",
+      message: "Internal server error",
       error: error,
     });
   }
@@ -112,36 +112,34 @@ const updateSingleUser = async (req: Request, res: Response) => {
     const userId = req.params.userId;
     const updatedData = req.body;
     const updatedUserId = updatedData?.userId;
-    const existingUser = await UserModel.findOne({ userId });
+    // const existingUser = await UserModel.findOne({ userId });
     const result = await userServices.updateSingleUserFromDB(
       userId,
       updatedData
     );
 
-    if (existingUser) {
-      if (result) {
-        // if userId is updated
-        if (updatedUserId) {
-          const updatedUserNewData = await userServices.getSingleUserFromDB(
-            updatedUserId
-          );
-          res.status(200).json({
-            success: true,
-            message: "User updated successfully!",
-            data: updatedUserNewData,
-          });
-        }
-        // if userId is not updated
-        else {
-          const updatedUserNewData = await userServices.getSingleUserFromDB(
-            userId
-          );
-          res.status(200).json({
-            success: true,
-            message: "User updated successfully!",
-            data: updatedUserNewData,
-          });
-        }
+    if (result) {
+      // if userId is updated
+      if (updatedUserId) {
+        const updatedUserNewData = await userServices.getSingleUserFromDB(
+          updatedUserId
+        );
+        res.status(200).json({
+          success: true,
+          message: "User updated successfully!",
+          data: updatedUserNewData,
+        });
+      }
+      // if userId is not updated
+      else {
+        const updatedUserNewData = await userServices.getSingleUserFromDB(
+          userId
+        );
+        res.status(200).json({
+          success: true,
+          message: "User updated successfully!",
+          data: updatedUserNewData,
+        });
       }
     } else {
       res.status(404).json({

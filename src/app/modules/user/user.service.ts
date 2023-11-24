@@ -55,11 +55,15 @@ const getSingleUserFromDB = async (userId: string) => {
   
 };
 
-const updateSingleUserFromDB = async (userId: string, updatedData: any) => {
-  const updateData = { $set: updatedData };
+const updateSingleUserFromDB = async ( userId: string, updatedData: any ) =>
+{
+  if (await UserModel.isUserExists(parseInt(userId, 10)))  {
+    const updateData = { $set: updatedData };
 
-  const result = await UserModel.updateOne({ userId }, updateData);
-  return result;
+    const result = await UserModel.updateOne({ userId }, updateData);
+    return result;
+  }
+  
 };
 
 const deleteSingleUserFromDB = async (userId: string) => {
