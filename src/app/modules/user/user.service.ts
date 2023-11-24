@@ -3,9 +3,10 @@ import { User } from "./user.interface";
 import { Request, Response } from "express";
 
 const createUserIntoDB = async (user: User) => {
-  // if (await UserModel.isUserExists(User.userId)) {
-  //   throw new Error("User already exists");
-  // }
+  // use user static method to check user exists or not
+  if (await UserModel.isUserExists(user.userId)) {
+    throw new Error("User already exists");
+  }
 
   const result = await UserModel.create(user);
   return result;
@@ -35,18 +36,23 @@ const getAllUsersFromDB = async () => {
 };
 
 const getSingleUserFromDB = async (userId: string) => {
-  const user = await UserModel.findOne(
-    { userId },
-    {
-      password: 0,
-      orders: 0,
-      __v: 0,
-      _id: 0,
-      "fullName._id": 0,
-      "address._id": 0,
-    }
-  );
-  return user;
+  // use user static method to check user exists or not
+  if (await UserModel.isUserExists(parseInt(userId, 10))) {
+    const user = await UserModel.findOne(
+      { userId },
+      {
+        password: 0,
+        orders: 0,
+        __v: 0,
+        _id: 0,
+        "fullName._id": 0,
+        "address._id": 0,
+      }
+    );
+    return user;
+  }
+
+  
 };
 
 const updateSingleUserFromDB = async (userId: string, updatedData: any) => {

@@ -11,14 +11,14 @@ const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
 
-    const existingUser = await UserModel.findOne({ userId: userData.userId });
+    // const existingUser = await UserModel.findOne({ userId: userData.userId });
 
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "User with the same userId already exists",
-      });
-    }
+    // if (existingUser) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "User with the same userId already exists",
+    //   });
+    // }
 
     const zodParsedData = UserValidationSchema.parse(userData);
 
@@ -47,11 +47,11 @@ const createUser = async (req: Request, res: Response) => {
       messages: "User created successfully",
       data: resultWithoutExcludedFields,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
-    res.status(500).json({
+    res.status(404).json({
       success: false,
-      error: error,
+      error: error.message || error,
     });
   }
 };
@@ -67,9 +67,9 @@ const getAllUsers = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    res.status(404).json({
       success: false,
-      message: "Internal Server Error",
+      message: "Users fetched Error!",
     });
   }
 };
@@ -89,14 +89,20 @@ const getSingleUser = async (req: Request, res: Response) => {
           description: "User not found!",
         },
       });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "User fetched successfully!",
+        data: user,
+      });
     }
-    res.status(200).json({
-      success: true,
-      message: "User fetched successfully!",
-      data: user,
-    });
   } catch (error) {
     console.log(error);
+    res.status(404).json({
+      success: false,
+      message: "User not found",
+      error: error,
+    });
   }
 };
 
@@ -249,8 +255,7 @@ const getSingleUserOrders = async (req: Request, res: Response) => {
   }
 };
 
-
-// api to get totalPrice of orders 
+// api to get totalPrice of orders
 const getTotalPrice = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
@@ -281,7 +286,6 @@ const getTotalPrice = async (req: Request, res: Response) => {
     });
   }
 };
-
 
 export const userController = {
   createUser,
