@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { userServices } from "./user.service";
-import { UserModel } from "../user.model";
 import {
   UserValidationSchema,
   OrderValidatorSchema,
@@ -10,15 +9,6 @@ import {
 const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
-
-    // const existingUser = await UserModel.findOne({ userId: userData.userId });
-
-    // if (existingUser) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "User with the same userId already exists",
-    //   });
-    // }
 
     const zodParsedData = UserValidationSchema.parse(userData);
 
@@ -48,7 +38,6 @@ const createUser = async (req: Request, res: Response) => {
       data: resultWithoutExcludedFields,
     });
   } catch (error: any) {
-    console.log(error);
     res.status(404).json({
       success: false,
       error: error.message || error,
@@ -112,7 +101,6 @@ const updateSingleUser = async (req: Request, res: Response) => {
     const userId = req.params.userId;
     const updatedData = req.body;
     const updatedUserId = updatedData?.userId;
-    // const existingUser = await UserModel.findOne({ userId });
     const result = await userServices.updateSingleUserFromDB(
       userId,
       updatedData
@@ -162,7 +150,6 @@ const updateSingleUser = async (req: Request, res: Response) => {
 const deleteSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
-    // const existingUser = await UserModel.findOne({ userId });
 
     if (await userServices.deleteSingleUserFromDB(userId)) {
       res.status(200).json({
@@ -193,7 +180,6 @@ const updateOrdersData = async (req: Request, res: Response) => {
     const userId = req.params.userId;
     const orderData = req.body;
     const validatedOrder = OrderValidatorSchema.parse(orderData);
-    // const existingUser = await UserModel.findOne({ userId });
 
     if (await userServices.addOrderInOrdersDB(userId, validatedOrder)) {
       res.status(200).json({
@@ -222,8 +208,6 @@ const updateOrdersData = async (req: Request, res: Response) => {
 const getSingleUserOrders = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
-
-    // const existingUser = await UserModel.findOne({ userId });
 
     const result = await userServices.retrieveUserOrders(userId);
 
@@ -255,7 +239,6 @@ const getTotalPrice = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
 
-    // const existingUser = await UserModel.findOne({ userId });
     const result = await userServices.retrieveTotalPriceOfOrders(userId);
     if (result) {
       res.status(200).json({

@@ -1,6 +1,5 @@
 import { UserModel } from "../user.model";
 import { User } from "./user.interface";
-import { Request, Response } from "express";
 
 const createUserIntoDB = async (user: User) => {
   // use user static method to check user exists or not
