@@ -40,3 +40,7 @@ ts-node-dev installation
 6. api for user order push in orders array
 7. get user orders api
 8. get total price of user orders api
+
+# static
+
+1. static method to check user exists or not

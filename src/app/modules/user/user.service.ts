@@ -51,78 +51,82 @@ const getSingleUserFromDB = async (userId: string) => {
     );
     return user;
   }
-
-  
 };
 
-const updateSingleUserFromDB = async ( userId: string, updatedData: any ) =>
-{
-  if (await UserModel.isUserExists(parseInt(userId, 10)))  {
+const updateSingleUserFromDB = async (userId: string, updatedData: any) => {
+  if (await UserModel.isUserExists(parseInt(userId, 10))) {
     const updateData = { $set: updatedData };
 
     const result = await UserModel.updateOne({ userId }, updateData);
     return result;
   }
-  
 };
 
 const deleteSingleUserFromDB = async (userId: string) => {
-  return await UserModel.deleteOne({ userId });
+  if (await UserModel.isUserExists(parseInt(userId, 10))) {
+    return await UserModel.deleteOne({ userId });
+  }
 };
 
 const addOrderInOrdersDB = async (userId: string, newOrder: any) => {
-  const result = await UserModel.updateOne(
-    { userId },
-    {
-      $push: {
-        orders: newOrder,
-      },
-    }
-  );
-  return result;
+  if (await UserModel.isUserExists(parseInt(userId, 10))) {
+    const result = await UserModel.updateOne(
+      { userId },
+      {
+        $push: {
+          orders: newOrder,
+        },
+      }
+    );
+    return result;
+  }
 };
 
 const retrieveUserOrders = async (userId: string) => {
-  const orders = await UserModel.findOne(
-    { userId },
-    {
-      orders: {
-        $map: {
-          input: "$orders",
-          as: "order",
-          in: {
-            productName: "$$order.productName",
-            price: "$$order.price",
-            quantity: "$$order.quantity",
-            _id: 0,
-          },
-        },
-      },
-      _id: 0,
-    }
-  );
-  return orders;
-};
-
-const retrieveTotalPriceOfOrders = async (userId: string) => {
-  const totalPrice = await UserModel.findOne(
-    { userId },
-    {
-      totalPrice: {
-        $sum: {
+  if (await UserModel.isUserExists(parseInt(userId, 10))) {
+    const orders = await UserModel.findOne(
+      { userId },
+      {
+        orders: {
           $map: {
             input: "$orders",
             as: "order",
             in: {
-              $multiply: ["$$order.price", "$$order.quantity"],
+              productName: "$$order.productName",
+              price: "$$order.price",
+              quantity: "$$order.quantity",
+              _id: 0,
             },
           },
         },
-      },
-      _id: 0,
-    }
-  );
-  return totalPrice;
+        _id: 0,
+      }
+    );
+    return orders;
+  }
+};
+
+const retrieveTotalPriceOfOrders = async (userId: string) => {
+  if (await UserModel.isUserExists(parseInt(userId, 10))) {
+    const totalPrice = await UserModel.findOne(
+      { userId },
+      {
+        totalPrice: {
+          $sum: {
+            $map: {
+              input: "$orders",
+              as: "order",
+              in: {
+                $multiply: ["$$order.price", "$$order.quantity"],
+              },
+            },
+          },
+        },
+        _id: 0,
+      }
+    );
+    return totalPrice;
+  }
 };
 
 export const userServices = {

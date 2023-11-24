@@ -162,16 +162,14 @@ const updateSingleUser = async (req: Request, res: Response) => {
 const deleteSingleUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
-    const existingUser = await UserModel.findOne({ userId });
+    // const existingUser = await UserModel.findOne({ userId });
 
-    if (existingUser) {
-      if (await userServices.deleteSingleUserFromDB(userId)) {
-        res.status(200).json({
-          success: true,
-          message: "User deleted successfully!",
-          data: null,
-        });
-      }
+    if (await userServices.deleteSingleUserFromDB(userId)) {
+      res.status(200).json({
+        success: true,
+        message: "User deleted successfully!",
+        data: null,
+      });
     } else {
       res.status(404).json({
         success: false,
@@ -195,15 +193,14 @@ const updateOrdersData = async (req: Request, res: Response) => {
     const userId = req.params.userId;
     const orderData = req.body;
     const validatedOrder = OrderValidatorSchema.parse(orderData);
-    const existingUser = await UserModel.findOne({ userId });
-    if (existingUser) {
-      if (await userServices.addOrderInOrdersDB(userId, validatedOrder)) {
-        res.status(200).json({
-          success: true,
-          message: "Order created successfully!",
-          data: null,
-        });
-      }
+    // const existingUser = await UserModel.findOne({ userId });
+
+    if (await userServices.addOrderInOrdersDB(userId, validatedOrder)) {
+      res.status(200).json({
+        success: true,
+        message: "Order created successfully!",
+        data: null,
+      });
     } else {
       res.status(404).json({
         success: false,
@@ -226,11 +223,11 @@ const getSingleUserOrders = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
 
-    const existingUser = await UserModel.findOne({ userId });
+    // const existingUser = await UserModel.findOne({ userId });
 
-    if (existingUser) {
-      const result = await userServices.retrieveUserOrders(userId);
-      // console.log(result);
+    const result = await userServices.retrieveUserOrders(userId);
+
+    if (result) {
       res.status(200).json({
         success: true,
         message: "Order fetched successfully!",
@@ -258,11 +255,9 @@ const getTotalPrice = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
 
-    const existingUser = await UserModel.findOne({ userId });
-
-    if (existingUser) {
-      const result = await userServices.retrieveTotalPriceOfOrders(userId);
-      // console.log(result);
+    // const existingUser = await UserModel.findOne({ userId });
+    const result = await userServices.retrieveTotalPriceOfOrders(userId);
+    if (result) {
       res.status(200).json({
         success: true,
         message: "Total price calculated successfully!",
