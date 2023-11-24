@@ -9,9 +9,7 @@ export const UserValidationSchema = z.object({
     lastName: z.string().max(20),
   }),
   age: z.number(),
-  email: z
-    .string()
-    .email(),
+  email: z.string().email(),
   isActive: z.boolean(),
   hobbies: z.array(z.string()),
   address: z.object({
@@ -28,14 +26,13 @@ export const UserValidationSchema = z.object({
       })
     )
     .default([]),
-} );
+});
 
 export const OrderValidatorSchema = z.object({
   productName: z.string(),
   price: z.number(),
   quantity: z.number(),
-} );
-
+});
 
 export const UserUpdateValidationSchema = z
   .object({
@@ -59,14 +56,5 @@ export const UserUpdateValidationSchema = z
         country: z.string().optional(),
       })
       .optional(),
-    orders: z
-      .array(
-        z.object({
-          productName: z.string().optional(),
-          price: z.number().optional(),
-          quantity: z.number().optional(),
-        })
-      )
-      .default([]),
   })
   .partial();
